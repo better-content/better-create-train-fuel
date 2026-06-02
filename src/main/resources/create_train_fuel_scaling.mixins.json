@@ -1,0 +1,13 @@
+{
+  "required": true,
+  "minVersion": "0.8",
+  "package": "io.github.createtrainfuelscaling.mixin",
+  "compatibilityLevel": "JAVA_17",
+  "refmap": "create_train_fuel_scaling.refmap.json",
+  "mixins": [
+    "TrainMixin"
+  ],
+  "injectors": {
+    "defaultRequire": 0
+  }
+}

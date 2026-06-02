@@ -1,0 +1,17 @@
+.gradle/
+build/
+run/
+logs/
+
+*.log
+*.class
+*.jar
+!gradle/wrapper/gradle-wrapper.jar
+*.war
+*.ear
+
+.idea/
+*.iml
+
+hs_err_pid*
+replay_pid*

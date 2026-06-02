@@ -1,0 +1,140 @@
+plugins {
+    id("net.minecraftforge.gradle") version "[6.0,6.2)"
+    id("org.spongepowered.mixin") version "0.7.+"
+    jacoco
+}
+
+val minecraftVersion = project.property("minecraft_version") as String
+val forgeVersion = project.property("forge_version") as String
+val createVersion = project.property("create_version") as String
+val createVersionRange = project.property("create_version_range") as String
+val ponderVersion = project.property("ponder_version") as String
+val modId = project.property("mod_id") as String
+val modName = project.property("mod_name") as String
+val modVersion = project.property("mod_version") as String
+val buildJvmVersion = 17
+
+group = project.property("mod_group") as String
+version = modVersion
+
+base {
+    archivesName.set("create-train-fuel-scaling")
+}
+
+java {
+    toolchain.languageVersion.set(JavaLanguageVersion.of(buildJvmVersion))
+    withSourcesJar()
+}
+
+repositories {
+    mavenCentral()
+    maven("https://maven.minecraftforge.net")
+    maven("https://repo.spongepowered.org/repository/maven-public/")
+    maven("https://maven.createmod.net")
+    maven("https://maven.tterrag.com/")
+}
+
+minecraft {
+    mappings("official", minecraftVersion)
+
+    runs {
+        configureEach {
+            workingDirectory(project.file("run"))
+            property("forge.logging.markers", "REGISTRIES")
+            property("forge.logging.console.level", "debug")
+            mods {
+                create(modId) {
+                    source(sourceSets.main.get())
+                }
+            }
+        }
+
+        create("client") {
+            property("forge.enabledGameTestNamespaces", modId)
+        }
+
+        create("server") {
+            property("forge.enabledGameTestNamespaces", modId)
+            arg("--nogui")
+        }
+
+        create("gameTestServer") {
+            property("forge.enabledGameTestNamespaces", modId)
+        }
+
+        create("data") {
+            args(
+                "--mod", modId,
+                "--all",
+                "--output", file("src/generated/resources").absolutePath,
+                "--existing", file("src/main/resources").absolutePath
+            )
+        }
+    }
+}
+
+sourceSets.main {
+    resources.srcDir("src/generated/resources")
+}
+
+val syncGameTestStructures by tasks.registering(Copy::class) {
+    from("src/main/resources/gameteststructures")
+    into(layout.projectDirectory.dir("run/gameteststructures"))
+}
+
+tasks.matching { it.name.startsWith("prepareRun") }.configureEach {
+    dependsOn(syncGameTestStructures)
+}
+
+dependencies {
+    minecraft("net.minecraftforge:forge:$minecraftVersion-$forgeVersion")
+    implementation(fg.deobf("com.simibubi.create:create-$minecraftVersion:$createVersion:slim"))
+    implementation(fg.deobf("dev.engine-room.flywheel:flywheel-forge-1.20.1:1.0.5"))
+    implementation(fg.deobf("net.createmod.ponder:Ponder-Forge-$minecraftVersion:$ponderVersion"))
+    implementation(fg.deobf("io.github.llamalad7:mixinextras-forge:0.3.6"))
+    implementation(fg.deobf("com.tterrag.registrate:Registrate:MC1.20-1.3.3"))
+
+    testImplementation("org.junit.jupiter:junit-jupiter:5.10.2")
+}
+
+tasks.processResources {
+    val props = mapOf(
+        "modId" to modId,
+        "modName" to modName,
+        "modVersion" to modVersion,
+        "minecraftVersion" to minecraftVersion,
+        "forgeVersion" to forgeVersion,
+        "createVersionRange" to createVersionRange
+    )
+    inputs.properties(props)
+    filesMatching("META-INF/mods.toml") {
+        expand(props)
+    }
+}
+
+tasks.withType<Test>().configureEach {
+    useJUnitPlatform()
+    finalizedBy("jacocoTestReport")
+}
+
+jacoco {
+    toolVersion = "0.8.12"
+}
+
+tasks.jacocoTestReport {
+    dependsOn(tasks.test)
+    reports {
+        xml.required.set(true)
+        html.required.set(true)
+        csv.required.set(false)
+    }
+}
+
+tasks.withType<JavaCompile>().configureEach {
+    options.release.set(17)
+}
+
+mixin {
+    add(sourceSets.main.get(), "create_train_fuel_scaling.refmap.json")
+    config("create_train_fuel_scaling.mixins.json")
+}
