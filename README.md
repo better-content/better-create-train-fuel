@@ -66,10 +66,11 @@ Known limitations:
 ## Tests
 
 ```sh
-./gradlew test
-./gradlew runGameTestServer
-./gradlew build
+./gradlew verifyFast
+./gradlew verifyFull
 ```
+
+`verifyFast` runs the JVM lane. `verifyFull` adds the headless Forge GameTest pass.
 
 Manual smoke:
 
