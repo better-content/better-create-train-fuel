@@ -78,3 +78,7 @@ Manual smoke:
 2. Start a server and confirm `config/create_train_fuel_scaling-common.toml` is generated.
 3. Run `/create_train_fuel_scaling formula 40`.
 4. Fuel a powered train and compare long slow movement against high-speed movement.
+
+## Community and support
+
+For modpack and mod discussion, playtest feedback, and bug reports, join the [Better Content Discord](https://discord.gg/EkRnZbzqS9).
