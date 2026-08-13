@@ -1,10 +1,10 @@
-package io.github.createtrainfuelscaling.command;
+package com.bettercontent.createtrainfuelscaling.command;
 
 import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.arguments.DoubleArgumentType;
 import com.simibubi.create.infrastructure.config.AllConfigs;
-import io.github.createtrainfuelscaling.TrainFuelCostCalculator;
-import io.github.createtrainfuelscaling.config.TrainFuelScalingConfig;
+import com.bettercontent.createtrainfuelscaling.TrainFuelCostCalculator;
+import com.bettercontent.createtrainfuelscaling.config.TrainFuelScalingConfig;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.Commands;
 import net.minecraft.network.chat.Component;

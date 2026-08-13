@@ -82,3 +82,12 @@ Manual smoke:
 ## Community and support
 
 For modpack and mod discussion, playtest feedback, and bug reports, join the [Better Content Discord](https://discord.gg/EkRnZbzqS9).
+
+## Canonical identity
+
+- Repository and Gradle project: `create-train-fuel-scaling`
+- Mod ID and resource namespace: `create_train_fuel_scaling`
+- Maven group: `com.bettercontent`
+- Runtime artifact: `build/libs/create-train-fuel-scaling-<version>.jar`
+
+The canonical identity is a clean break. Legacy mod IDs, resource namespaces, configuration paths, commands, network channels, and saved-data keys are not migrated or aliased.

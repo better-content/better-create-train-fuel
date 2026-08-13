@@ -1,6 +1,6 @@
-package io.github.createtrainfuelscaling;
+package com.bettercontent.createtrainfuelscaling;
 
-import io.github.createtrainfuelscaling.config.TrainFuelScalingConfig;
+import com.bettercontent.createtrainfuelscaling.config.TrainFuelScalingConfig;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;

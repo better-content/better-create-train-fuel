@@ -14,11 +14,11 @@ val modName = project.property("mod_name") as String
 val modVersion = project.property("mod_version") as String
 val buildJvmVersion = 17
 
-group = project.property("mod_group") as String
+group = "com.bettercontent"
 version = modVersion
 
 base {
-    archivesName.set("create-train-fuel-scaling")
+    archivesName.set(property("artifact_name") as String)
 }
 
 java {

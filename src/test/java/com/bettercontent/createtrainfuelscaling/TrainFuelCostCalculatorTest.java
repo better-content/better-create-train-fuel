@@ -1,4 +1,4 @@
-package io.github.createtrainfuelscaling;
+package com.bettercontent.createtrainfuelscaling;
 
 import org.junit.jupiter.api.Test;
 

@@ -1,8 +1,8 @@
-package io.github.createtrainfuelscaling;
+package com.bettercontent.createtrainfuelscaling;
 
-import io.github.createtrainfuelscaling.command.TrainFuelScalingCommands;
-import io.github.createtrainfuelscaling.config.TrainFuelScalingConfig;
-import io.github.createtrainfuelscaling.gametest.TrainFuelScalingGameTests;
+import com.bettercontent.createtrainfuelscaling.command.TrainFuelScalingCommands;
+import com.bettercontent.createtrainfuelscaling.config.TrainFuelScalingConfig;
+import com.bettercontent.createtrainfuelscaling.gametest.TrainFuelScalingGameTests;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.RegisterCommandsEvent;
 import net.minecraftforge.eventbus.api.IEventBus;

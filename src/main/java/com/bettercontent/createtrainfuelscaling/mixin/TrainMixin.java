@@ -1,13 +1,13 @@
-package io.github.createtrainfuelscaling.mixin;
+package com.bettercontent.createtrainfuelscaling.mixin;
 
 import com.simibubi.create.content.contraptions.minecart.TrainCargoManager;
 import com.simibubi.create.content.trains.entity.Carriage;
 import com.simibubi.create.content.trains.entity.Train;
 import com.simibubi.create.content.trains.graph.DimensionPalette;
-import io.github.createtrainfuelscaling.CreateTrainFuelScaling;
-import io.github.createtrainfuelscaling.TrainFuelCostCalculator;
-import io.github.createtrainfuelscaling.command.TrainFuelScalingCommands;
-import io.github.createtrainfuelscaling.config.TrainFuelScalingConfig;
+import com.bettercontent.createtrainfuelscaling.CreateTrainFuelScaling;
+import com.bettercontent.createtrainfuelscaling.TrainFuelCostCalculator;
+import com.bettercontent.createtrainfuelscaling.command.TrainFuelScalingCommands;
+import com.bettercontent.createtrainfuelscaling.config.TrainFuelScalingConfig;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.common.ForgeHooks;

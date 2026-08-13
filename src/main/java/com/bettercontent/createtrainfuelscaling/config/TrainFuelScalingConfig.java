@@ -1,4 +1,4 @@
-package io.github.createtrainfuelscaling.config;
+package com.bettercontent.createtrainfuelscaling.config;
 
 import net.minecraftforge.common.ForgeConfigSpec;
 import net.minecraftforge.fml.event.config.ModConfigEvent;

@@ -1,4 +1,4 @@
-package io.github.createtrainfuelscaling;
+package com.bettercontent.createtrainfuelscaling;
 
 public final class TrainFuelCostCalculator {
     private TrainFuelCostCalculator() {
