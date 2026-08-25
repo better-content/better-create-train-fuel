@@ -24,7 +24,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
-@Mixin(Train.class)
+@Mixin(value = Train.class, remap = false)
 public abstract class TrainMixin {
     @Unique
     private static final String CREATE_TRAIN_FUEL_SCALING_DEBT_TAG = "CreateTrainFuelScalingFuelDebt";
@@ -33,7 +33,7 @@ public abstract class TrainMixin {
     @Unique
     private int createTrainFuelScaling$debugBurnCalls;
 
-    @Inject(method = "burnFuel", at = @At("HEAD"), cancellable = true)
+    @Inject(method = "burnFuel", at = @At("HEAD"), cancellable = true, remap = false)
     private void createTrainFuelScaling$burnFuel(CallbackInfo ci) {
         if (!TrainFuelScalingConfig.ENABLED.get()) {
             return;
@@ -127,14 +127,14 @@ public abstract class TrainMixin {
                 train.id, speedBps, ratio, cost, createTrainFuelScaling$fuelDebt, train.fuelTicks);
     }
 
-    @Inject(method = "write", at = @At("RETURN"))
+    @Inject(method = "write", at = @At("RETURN"), remap = false)
     private void createTrainFuelScaling$write(DimensionPalette dimensions, CallbackInfoReturnable<CompoundTag> cir) {
         if (Double.isFinite(createTrainFuelScaling$fuelDebt)) {
             cir.getReturnValue().putDouble(CREATE_TRAIN_FUEL_SCALING_DEBT_TAG, createTrainFuelScaling$fuelDebt);
         }
     }
 
-    @Inject(method = "read", at = @At("RETURN"))
+    @Inject(method = "read", at = @At("RETURN"), remap = false)
     private static void createTrainFuelScaling$read(CompoundTag tag, Map<UUID, ?> trackNetworks, DimensionPalette dimensions,
             CallbackInfoReturnable<Train> cir) {
         Train train = cir.getReturnValue();
