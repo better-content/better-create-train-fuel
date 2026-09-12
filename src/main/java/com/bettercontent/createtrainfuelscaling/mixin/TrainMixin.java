@@ -32,6 +32,12 @@ public abstract class TrainMixin {
     private double createTrainFuelScaling$fuelDebt;
     @Unique
     private int createTrainFuelScaling$debugBurnCalls;
+    @Unique private net.minecraft.server.MinecraftServer createTrainFuelScaling$server;
+
+    @Inject(method = "tick", at = @At("HEAD"), remap = false)
+    private void createTrainFuelScaling$captureServer(net.minecraft.world.level.Level level, CallbackInfo ci) {
+        createTrainFuelScaling$server = level.getServer();
+    }
 
     @Inject(method = "burnFuel", at = @At("HEAD"), cancellable = true, remap = false)
     private void createTrainFuelScaling$burnFuel(CallbackInfo ci) {
@@ -52,10 +58,22 @@ public abstract class TrainMixin {
                 TrainFuelScalingConfig.MINIMUM_MOVING_SPEED_BPS.get());
 
         if (train.fuelTicks > 0) {
+            double baselineCost = TrainFuelCostCalculator.costPerTick(normalMax, normalMax,
+                    TrainFuelScalingConfig.BASE_COST.get(), TrainFuelScalingConfig.K.get(),
+                    TrainFuelScalingConfig.MINIMUM_COST.get(), TrainFuelScalingConfig.MAXIMUM_COST.get(),
+                    TrainFuelScalingConfig.CONSUME_WHILE_STOPPED.get(), TrainFuelScalingConfig.MINIMUM_MOVING_SPEED_BPS.get());
+            int baselineConsumed = TrainFuelCostCalculator.applyDebt(train.fuelTicks, createTrainFuelScaling$fuelDebt,
+                    baselineCost, TrainFuelScalingConfig.RESET_DEBT_WHEN_FUEL_EMPTY.get()).consumedFuelTicks();
             TrainFuelCostCalculator.FuelDebtResult result = TrainFuelCostCalculator.applyDebt(train.fuelTicks,
                     createTrainFuelScaling$fuelDebt, cost, TrainFuelScalingConfig.RESET_DEBT_WHEN_FUEL_EMPTY.get());
             train.fuelTicks = result.remainingFuelTicks();
             createTrainFuelScaling$fuelDebt = result.remainingDebt();
+            if (createTrainFuelScaling$server != null && train.owner != null && speedBps > normalMax
+                    && result.consumedFuelTicks() > baselineConsumed) {
+                net.minecraftforge.common.MinecraftForge.EVENT_BUS.post(
+                    new com.bettercontent.createtrainfuelscaling.api.TrainFuelConsumedEvent(createTrainFuelScaling$server,
+                        train.owner, train.id, result.consumedFuelTicks(), baselineConsumed, speedBps));
+            }
             createTrainFuelScaling$debug(train, speedBps, normalMax, cost);
             return;
         }
