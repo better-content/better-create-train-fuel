@@ -103,6 +103,36 @@ public final class TrainFuelScalingGameTests {
     }
 
     @GameTest(templateNamespace = "minecraft", template = "empty")
+    public static void reverseNormalSpeedConsumesAtTheNormalRate(GameTestHelper helper) {
+        Train train = minimalTrain();
+        train.speed = -2.0;
+        train.fuelTicks = 5;
+
+        train.burnFuel();
+
+        if (train.fuelTicks != 4) {
+            helper.fail("Reverse normal speed should consume exactly one fuel tick");
+            return;
+        }
+        helper.succeed();
+    }
+
+    @GameTest(templateNamespace = "minecraft", template = "empty")
+    public static void fastPoweredTravelConsumesMoreThanNormalSpeed(GameTestHelper helper) {
+        Train train = minimalTrain();
+        train.speed = 4.0;
+        train.fuelTicks = 20;
+
+        train.burnFuel();
+
+        if (train.fuelTicks != 13) {
+            helper.fail("Fast powered travel should consume its 7.389 fuel-tick debt");
+            return;
+        }
+        helper.succeed();
+    }
+
+    @GameTest(templateNamespace = "minecraft", template = "empty")
     public static void stoppedTrainDoesNotDrainWhenDisabled(GameTestHelper helper) {
         Train train = minimalTrain();
         train.speed = 0.0;

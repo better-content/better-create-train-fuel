@@ -53,6 +53,27 @@ class TrainFuelCostCalculatorTest {
     }
 
     @Test
+    void fastOperationIsExpensiveWithoutForbiddingIt() {
+        double normal = TrainFuelCostCalculator.costPerTick(40.0, 40.0, 1.0, 2.0, 0.0, 16.0, false, 0.05);
+        double fast = TrainFuelCostCalculator.costPerTick(80.0, 40.0, 1.0, 2.0, 0.0, 16.0, false, 0.05);
+        double veryFast = TrainFuelCostCalculator.costPerTick(120.0, 40.0, 1.0, 2.0, 0.0, 16.0, false, 0.05);
+
+        assertEquals(1.0, normal, EPSILON);
+        assertEquals(Math.exp(2.0), fast, EPSILON);
+        assertEquals(16.0, veryFast, EPSILON);
+    }
+
+    @Test
+    void reversePropulsionHasTheSameFuelCostAsForward() {
+        double forward = TrainFuelCostCalculator.costPerTick(
+                TrainFuelCostCalculator.speedBps(2.0), 40.0, 1.0, 2.0, 0.0, 16.0, false, 0.05);
+        double reverse = TrainFuelCostCalculator.costPerTick(
+                TrainFuelCostCalculator.speedBps(-2.0), 40.0, 1.0, 2.0, 0.0, 16.0, false, 0.05);
+
+        assertEquals(forward, reverse, EPSILON);
+    }
+
+    @Test
     void stoppedTrainDoesNotDrainByDefault() {
         assertEquals(0.0, TrainFuelCostCalculator.costPerTick(0.0, 40.0, 1.0, 2.0, 0.0, 16.0, false, 0.05), EPSILON);
     }
@@ -110,5 +131,29 @@ class TrainFuelCostCalculatorTest {
         assertEquals(0, result.remainingFuelTicks());
         assertEquals(1.5, result.remainingDebt(), EPSILON);
         assertEquals(1, result.consumedFuelTicks());
+    }
+
+    @Test
+    void sustainedNormalAndFastPropulsionConsumeTheirAccumulatedDebt() {
+        int normalFuel = 100;
+        int fastFuel = 100;
+        double normalDebt = 0.0;
+        double fastDebt = 0.0;
+        double normalCost = TrainFuelCostCalculator.costPerTick(40.0, 40.0, 1.0, 2.0, 0.0, 16.0, false, 0.05);
+        double fastCost = TrainFuelCostCalculator.costPerTick(80.0, 40.0, 1.0, 2.0, 0.0, 16.0, false, 0.05);
+
+        for (int tick = 0; tick < 10; tick++) {
+            TrainFuelCostCalculator.FuelDebtResult normal = TrainFuelCostCalculator.applyDebt(normalFuel, normalDebt, normalCost, true);
+            normalFuel = normal.remainingFuelTicks();
+            normalDebt = normal.remainingDebt();
+            TrainFuelCostCalculator.FuelDebtResult fast = TrainFuelCostCalculator.applyDebt(fastFuel, fastDebt, fastCost, true);
+            fastFuel = fast.remainingFuelTicks();
+            fastDebt = fast.remainingDebt();
+        }
+
+        assertEquals(90, normalFuel);
+        assertEquals(27, fastFuel);
+        assertEquals(0.0, normalDebt, EPSILON);
+        assertEquals(10 * Math.exp(2.0) - 73, fastDebt, EPSILON);
     }
 }

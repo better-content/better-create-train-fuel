@@ -26,6 +26,18 @@ Using Create's default powered top speed of `40 bps`, `baseCost = 1.0`, and `k =
 | 40 bps | 1.00 | 1.0000 |
 | 60 bps | 1.50 | 2.7183 |
 | 80 bps | 2.00 | 7.3891 |
+| 120 bps | 3.00 | 16.0000 (default cap) |
+
+The current curve is intentionally unchanged: normal powered travel consumes 1.0 fuel tick per
+tick, 80 bps consumes 7.3891, and the configured 16.0 maximum still permits 120 bps travel at a
+substantially higher cost.
+
+Create invokes `Train.burnFuel()` from its shared navigation path after its native braking and
+station-distance checks. The mixin only changes fuel accounting there, so manual driving,
+schedules, reverse travel, station approaches, coasting, braking, refueling, and recovery keep
+Create's native movement decisions. Fuel still controls Create's powered max speed and acceleration;
+when fuel is exhausted, Create falls back to its unpowered movement values until the next successful
+native-order refuel.
 
 ## Config
 
