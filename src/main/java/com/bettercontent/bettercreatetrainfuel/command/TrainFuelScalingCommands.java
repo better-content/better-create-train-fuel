@@ -1,10 +1,10 @@
-package com.bettercontent.createtrainfuelscaling.command;
+package com.bettercontent.bettercreatetrainfuel.command;
 
 import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.arguments.DoubleArgumentType;
 import com.simibubi.create.infrastructure.config.AllConfigs;
-import com.bettercontent.createtrainfuelscaling.TrainFuelCostCalculator;
-import com.bettercontent.createtrainfuelscaling.config.TrainFuelScalingConfig;
+import com.bettercontent.bettercreatetrainfuel.TrainFuelCostCalculator;
+import com.bettercontent.bettercreatetrainfuel.config.TrainFuelScalingConfig;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.Commands;
 import net.minecraft.network.chat.Component;
@@ -14,7 +14,7 @@ public final class TrainFuelScalingCommands {
     }
 
     public static void register(CommandDispatcher<CommandSourceStack> dispatcher) {
-        dispatcher.register(Commands.literal("create_train_fuel_scaling")
+        dispatcher.register(Commands.literal("better_create_train_fuel")
                 .requires(source -> source.hasPermission(2))
                 .then(Commands.literal("formula")
                         .then(Commands.argument("speedBps", DoubleArgumentType.doubleArg(0.0))

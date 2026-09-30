@@ -1,4 +1,4 @@
-package com.bettercontent.createtrainfuelscaling.config;
+package com.bettercontent.bettercreatetrainfuel.config;
 
 import net.minecraftforge.common.ForgeConfigSpec;
 import net.minecraftforge.fml.event.config.ModConfigEvent;
@@ -43,7 +43,7 @@ public final class TrainFuelScalingConfig {
 
     public static void validate() {
         if (MAXIMUM_COST.get() < MINIMUM_COST.get()) {
-            throw new IllegalStateException("create_train_fuel_scaling maximumCost must be >= minimumCost");
+            throw new IllegalStateException("better_create_train_fuel maximumCost must be >= minimumCost");
         }
     }
 }

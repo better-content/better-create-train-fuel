@@ -1,8 +1,8 @@
-package com.bettercontent.createtrainfuelscaling;
+package com.bettercontent.bettercreatetrainfuel;
 
-import com.bettercontent.createtrainfuelscaling.command.TrainFuelScalingCommands;
-import com.bettercontent.createtrainfuelscaling.config.TrainFuelScalingConfig;
-import com.bettercontent.createtrainfuelscaling.gametest.TrainFuelScalingGameTests;
+import com.bettercontent.bettercreatetrainfuel.command.TrainFuelScalingCommands;
+import com.bettercontent.bettercreatetrainfuel.config.TrainFuelScalingConfig;
+import com.bettercontent.bettercreatetrainfuel.gametest.TrainFuelScalingGameTests;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.RegisterCommandsEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
@@ -18,7 +18,7 @@ import org.slf4j.LoggerFactory;
 
 @Mod(CreateTrainFuelScaling.MOD_ID)
 public final class CreateTrainFuelScaling {
-    public static final String MOD_ID = "create_train_fuel_scaling";
+    public static final String MOD_ID = "better_create_train_fuel";
     public static final Logger LOGGER = LoggerFactory.getLogger(MOD_ID);
 
     public CreateTrainFuelScaling() {

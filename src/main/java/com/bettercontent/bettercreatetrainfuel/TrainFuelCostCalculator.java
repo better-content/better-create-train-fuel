@@ -1,4 +1,4 @@
-package com.bettercontent.createtrainfuelscaling;
+package com.bettercontent.bettercreatetrainfuel;
 
 public final class TrainFuelCostCalculator {
     private TrainFuelCostCalculator() {

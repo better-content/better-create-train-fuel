@@ -1,4 +1,4 @@
-package com.bettercontent.createtrainfuelscaling.api;
+package com.bettercontent.bettercreatetrainfuel.api;
 import net.minecraft.server.MinecraftServer;
 import net.minecraftforge.eventbus.api.Event;
 import java.util.UUID;

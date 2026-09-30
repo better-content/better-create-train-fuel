@@ -1,4 +1,4 @@
-package com.bettercontent.createtrainfuelscaling;
+package com.bettercontent.bettercreatetrainfuel;
 
 import org.junit.jupiter.api.Test;
 

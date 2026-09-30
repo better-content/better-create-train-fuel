@@ -1,9 +1,9 @@
-package com.bettercontent.createtrainfuelscaling.gametest;
+package com.bettercontent.bettercreatetrainfuel.gametest;
 
 import com.simibubi.create.content.trains.entity.Train;
-import com.bettercontent.createtrainfuelscaling.CreateTrainFuelScaling;
-import com.bettercontent.createtrainfuelscaling.TrainFuelCostCalculator;
-import com.bettercontent.createtrainfuelscaling.config.TrainFuelScalingConfig;
+import com.bettercontent.bettercreatetrainfuel.CreateTrainFuelScaling;
+import com.bettercontent.bettercreatetrainfuel.TrainFuelCostCalculator;
+import com.bettercontent.bettercreatetrainfuel.config.TrainFuelScalingConfig;
 import net.minecraft.gametest.framework.GameTest;
 import net.minecraft.gametest.framework.GameTestHelper;
 import net.minecraft.world.item.ItemStack;

@@ -17,4 +17,4 @@ dependencyResolutionManagement {
     }
 }
 
-rootProject.name = "create-train-fuel-scaling"
+rootProject.name = "better-create-train-fuel"

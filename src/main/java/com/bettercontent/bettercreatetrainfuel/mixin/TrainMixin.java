@@ -1,13 +1,13 @@
-package com.bettercontent.createtrainfuelscaling.mixin;
+package com.bettercontent.bettercreatetrainfuel.mixin;
 
 import com.simibubi.create.content.contraptions.minecart.TrainCargoManager;
 import com.simibubi.create.content.trains.entity.Carriage;
 import com.simibubi.create.content.trains.entity.Train;
 import com.simibubi.create.content.trains.graph.DimensionPalette;
-import com.bettercontent.createtrainfuelscaling.CreateTrainFuelScaling;
-import com.bettercontent.createtrainfuelscaling.TrainFuelCostCalculator;
-import com.bettercontent.createtrainfuelscaling.command.TrainFuelScalingCommands;
-import com.bettercontent.createtrainfuelscaling.config.TrainFuelScalingConfig;
+import com.bettercontent.bettercreatetrainfuel.CreateTrainFuelScaling;
+import com.bettercontent.bettercreatetrainfuel.TrainFuelCostCalculator;
+import com.bettercontent.bettercreatetrainfuel.command.TrainFuelScalingCommands;
+import com.bettercontent.bettercreatetrainfuel.config.TrainFuelScalingConfig;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.common.ForgeHooks;
@@ -71,7 +71,7 @@ public abstract class TrainMixin {
             if (createTrainFuelScaling$server != null && train.owner != null && speedBps > normalMax
                     && result.consumedFuelTicks() > baselineConsumed) {
                 net.minecraftforge.common.MinecraftForge.EVENT_BUS.post(
-                    new com.bettercontent.createtrainfuelscaling.api.TrainFuelConsumedEvent(createTrainFuelScaling$server,
+                    new com.bettercontent.bettercreatetrainfuel.api.TrainFuelConsumedEvent(createTrainFuelScaling$server,
                         train.owner, train.id, result.consumedFuelTicks(), baselineConsumed, speedBps));
             }
             createTrainFuelScaling$debug(train, speedBps, normalMax, cost);

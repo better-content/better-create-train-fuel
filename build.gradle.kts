@@ -119,8 +119,8 @@ val verifyRuntimeMixinMetadata by tasks.registering {
     doLast {
         val runtimeJar = layout.buildDirectory.file("libs/${base.archivesName.get()}-$version.jar").get().asFile
         ZipFile(runtimeJar).use { zip ->
-            val config = zip.getEntry("create_train_fuel_scaling.mixins.json")
-                ?: error("Runtime JAR is missing create_train_fuel_scaling.mixins.json")
+            val config = zip.getEntry("better_create_train_fuel.mixins.json")
+                ?: error("Runtime JAR is missing better_create_train_fuel.mixins.json")
             val configText = zip.getInputStream(config).bufferedReader().use { it.readText() }
             check(!configText.contains("\"refmap\"")) { "Runtime mixin config still declares a refmap" }
             check(zip.entries().asSequence().none { it.name.endsWith(".refmap.json") }) {
@@ -196,5 +196,5 @@ tasks.withType<JavaCompile>().configureEach {
 }
 
 mixin {
-    config("create_train_fuel_scaling.mixins.json")
+    config("better_create_train_fuel.mixins.json")
 }

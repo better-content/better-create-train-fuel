@@ -1,4 +1,4 @@
-# Create Train Fuel Scaling
+# Better Create Train Fuel
 
 Standalone Forge 1.20.1 addon for Create 6.0.8 that replaces Create's flat powered-train fuel drain with speed-scaled fuel drain.
 
@@ -41,7 +41,7 @@ native-order refuel.
 
 ## Config
 
-Forge writes `create_train_fuel_scaling-common.toml`.
+Forge writes `better_create_train_fuel-common.toml`.
 
 ```toml
 enabled = true
@@ -60,7 +60,7 @@ Values are validated as non-negative, and `maximumCost` must be greater than or 
 ## Command
 
 ```text
-/create_train_fuel_scaling formula <speedBps>
+/better_create_train_fuel formula <speedBps>
 ```
 
 Prints the current Create powered train top speed, ratio, and computed cost using the live config.
@@ -87,8 +87,8 @@ Known limitations:
 Manual smoke:
 
 1. Install in a Forge 1.20.1 Create 6.0.8 instance.
-2. Start a server and confirm `config/create_train_fuel_scaling-common.toml` is generated.
-3. Run `/create_train_fuel_scaling formula 40`.
+2. Start a server and confirm `config/better_create_train_fuel-common.toml` is generated.
+3. Run `/better_create_train_fuel formula 40`.
 4. Fuel a powered train and compare long slow movement against high-speed movement.
 
 ## Community and support
@@ -97,9 +97,9 @@ For modpack and mod discussion, playtest feedback, and bug reports, join the [Be
 
 ## Canonical identity
 
-- Repository and Gradle project: `create-train-fuel-scaling`
-- Mod ID and resource namespace: `create_train_fuel_scaling`
+- Repository and Gradle project: `better-create-train-fuel`
+- Mod ID and resource namespace: `better_create_train_fuel`
 - Maven group: `com.bettercontent`
-- Runtime artifact: `build/libs/create-train-fuel-scaling-<version>.jar`
+- Runtime artifact: `build/libs/better-create-train-fuel-<version>.jar`
 
 The canonical identity is a clean break. Legacy mod IDs, resource namespaces, configuration paths, commands, network channels, and saved-data keys are not migrated or aliased.

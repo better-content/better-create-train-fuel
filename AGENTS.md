@@ -2,10 +2,10 @@
 
 ## Scope
 
-This repository contains the Better Content-owned Forge mod **Create Train Fuel Scaling**.
+This repository contains the Better Content-owned Forge mod **Better Create Train Fuel**.
 
-- Canonical mod ID: `create_train_fuel_scaling`
-- Canonical artifact: `create-train-fuel-scaling-<version>.jar`
+- Canonical mod ID: `better_create_train_fuel`
+- Canonical artifact: `better-create-train-fuel-<version>.jar`
 - Maven group: `com.bettercontent`
 - Java runtime: 17
 - Minecraft/Forge baseline: 1.20.1 / 47.4.13
