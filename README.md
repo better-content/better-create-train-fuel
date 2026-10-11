@@ -1,5 +1,11 @@
 # Better Create Train Fuel
 
+## Scope and authority
+
+This repository owns its mod-specific behavior and authoring inputs. Read [local instructions](AGENTS.md)
+and the [shared documentation/policy index](../../better-content-modpack/docs/README.md).
+
+
 Standalone Forge 1.20.1 addon for Create 6.0.8 that replaces Create's flat powered-train fuel drain with speed-scaled fuel drain.
 
 ## Behavior
