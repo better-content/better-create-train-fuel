@@ -4,7 +4,8 @@ import com.simibubi.create.content.contraptions.minecart.TrainCargoManager;
 import com.simibubi.create.content.trains.entity.Carriage;
 import com.simibubi.create.content.trains.entity.Train;
 import com.simibubi.create.content.trains.graph.DimensionPalette;
-import com.bettercontent.bettercreatetrainfuel.CreateTrainFuelScaling;
+import com.bettercontent.bettercreatetrainfuel.diagnostics.PlaytestDiagnostics;
+import com.bettercontent.bettercreatetrainfuel.diagnostics.PlaytestLog;
 import com.bettercontent.bettercreatetrainfuel.TrainFuelCostCalculator;
 import com.bettercontent.bettercreatetrainfuel.command.TrainFuelScalingCommands;
 import com.bettercontent.bettercreatetrainfuel.config.TrainFuelScalingConfig;
@@ -33,10 +34,17 @@ public abstract class TrainMixin {
     @Unique
     private int createTrainFuelScaling$debugBurnCalls;
     @Unique private net.minecraft.server.MinecraftServer createTrainFuelScaling$server;
+    @Unique private boolean playtestNoFuel;
+    @Unique private String playtestTraceDimension = "";
+    @Unique private long playtestTraceTick = -1;
 
     @Inject(method = "tick", at = @At("HEAD"), remap = false)
     private void createTrainFuelScaling$captureServer(net.minecraft.world.level.Level level, CallbackInfo ci) {
         createTrainFuelScaling$server = level.getServer();
+        if (TrainFuelScalingConfig.DEBUG_LOGGING.get() && PlaytestDiagnostics.LOG.traceEnabled("fuel")) {
+            playtestTraceDimension = level.dimension().location().toString();
+            playtestTraceTick = level.getGameTime();
+        }
     }
 
     @Inject(method = "burnFuel", at = @At("HEAD"), cancellable = true, remap = false)
@@ -121,28 +129,42 @@ public abstract class TrainMixin {
                 if (stack.isEmpty()) {
                     continue;
                 }
-                train.fuelTicks += burnTime * stack.getCount();
+                int addedTicks = burnTime * stack.getCount();
+                train.fuelTicks += addedTicks;
                 ItemStack containerItem = stack.getCraftingRemainingItem();
+                ItemStack remainder = ItemStack.EMPTY;
                 if (!containerItem.isEmpty()) {
-                    ItemHandlerHelper.insertItemStacked(fuelItems, containerItem, false);
+                    remainder = ItemHandlerHelper.insertItemStacked(fuelItems, containerItem, false);
+                }
+                if (PlaytestDiagnostics.LOG.enabled("fuel")) {
+                    playtestNoFuel = false;
+                    final ItemStack returned = remainder;
+                    PlaytestDiagnostics.LOG.event("fuel", "train.refuel", "server", "applied", "item_extracted", () -> com.bettercontent.bettercreatetrainfuel.diagnostics.FeatureObservation.fields(
+                        train.id, i, iterateFromBack, addedTicks, train.fuelTicks, returned.getCount()));
                 }
                 return;
             }
+        }
+        if (PlaytestDiagnostics.LOG.enabled("fuel") && !playtestNoFuel) {
+            playtestNoFuel = true;
+            PlaytestDiagnostics.LOG.event("fuel", "train.refuel", "server", "deferred", "no_extractable_fuel",
+                () -> PlaytestLog.fields("train", train.id, "carriages", carriageCount));
         }
     }
 
     @Unique
     private void createTrainFuelScaling$debug(Train train, double speedBps, double normalMax, double cost) {
-        if (!TrainFuelScalingConfig.DEBUG_LOGGING.get()) {
+        if (!TrainFuelScalingConfig.DEBUG_LOGGING.get() || !PlaytestDiagnostics.LOG.traceEnabled("fuel")) {
             return;
         }
         createTrainFuelScaling$debugBurnCalls++;
         if (createTrainFuelScaling$debugBurnCalls % 100 != 0) {
             return;
         }
-        double ratio = TrainFuelCostCalculator.speedRatio(speedBps, normalMax);
-        CreateTrainFuelScaling.LOGGER.debug("train={} speedBps={} ratio={} cost={} debt={} fuelTicks={}",
-                train.id, speedBps, ratio, cost, createTrainFuelScaling$fuelDebt, train.fuelTicks);
+        PlaytestDiagnostics.LOG.trace("fuel", "train.formula_sample", new PlaytestLog.Context("server", playtestTraceDimension, playtestTraceTick,
+            train.id.toString(), ""), "observed", "legacy_100_burn_calls", () -> PlaytestLog.fields("speed_bps", speedBps,
+                "ratio", TrainFuelCostCalculator.speedRatio(speedBps, normalMax), "cost", cost,
+                "debt", createTrainFuelScaling$fuelDebt, "fuel_ticks", train.fuelTicks));
     }
 
     @Inject(method = "write", at = @At("RETURN"), remap = false)
@@ -163,5 +185,9 @@ public abstract class TrainMixin {
         if (Double.isFinite(debt)) {
             ((TrainMixin) (Object) train).createTrainFuelScaling$fuelDebt = Math.max(0.0, debt);
         }
+        if (PlaytestDiagnostics.LOG.enabled("persistence")) PlaytestDiagnostics.LOG.event("persistence", "train.debt_restore", "unknown",
+            Double.isFinite(debt) ? "restored" : "ignored", !Double.isFinite(debt) ? "nonfinite_debt" : debt < 0 ? "negative_clamped" : "finite_debt",
+            () -> PlaytestLog.fields("train", train.id, "restored_debt", ((TrainMixin) (Object) train).createTrainFuelScaling$fuelDebt,
+                "durability", "not_observed"));
     }
 }

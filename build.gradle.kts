@@ -79,14 +79,7 @@ sourceSets.main {
     resources.srcDir("src/generated/resources")
 }
 
-val syncGameTestStructures by tasks.registering(Copy::class) {
-    from("src/main/resources/gameteststructures")
-    into(layout.projectDirectory.dir("run/gameteststructures"))
-}
-
-tasks.matching { it.name.startsWith("prepareRun") }.configureEach {
-    dependsOn(syncGameTestStructures)
-}
+apply(from = "gradle/native-gametest-fixture.gradle")
 
 dependencies {
     minecraft("net.minecraftforge:forge:$minecraftVersion-$forgeVersion")

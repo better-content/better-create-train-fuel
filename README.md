@@ -1,5 +1,25 @@
 # Better Create Train Fuel
 
+## Playtest diagnostics
+
+`bc.playtest.better_create_train_fuel.fuel` reports actual native-order refuel extraction,
+credited fuel ticks, carriage/direction and the returned crafting remainder count. Exhausted
+scans emit only the no-fuel edge until refueling succeeds. `persistence` reports finite,
+clamped or ignored debt restore, not durable storage. Train UUID is the causal native
+vehicle identity, never its owner's identity. No inventories, names or NBT are logged.
+
+The legacy `debugLogging` switch gates only the focused TRACE formula sample every100
+burn calls; new causal DEBUG does not depend on it. TRACE additionally requires logger
+TRACE and `bc.playtest.trace.better_create_train_fuel.dimension=namespace:path` plus
+`bc.playtest.trace.better_create_train_fuel.subject=<train UUID>`. Dimension/tick are from
+Create's existing train tick argument, not an independently located train. Invalid/absent
+focus gives no detail and one status; first matching detail arms60 seconds/1000 records
+once per process. Categories share120 details/minute, burst20,256 keys and2048 chars.
+Native END ticks summarize every30 seconds; stop clears aggregation without rearming.
+INFO startup includes effective enabled/version/integration/own-source identity or UNKNOWN.
+Standalone stays native INFO; pack profile chooses scoped DEBUG/`bc.playtest.level`.
+Common six-case and refuel/remainder projection tests run with the source gate.
+
 ## Scope and authority
 
 This repository owns its mod-specific behavior and authoring inputs. Read [local instructions](AGENTS.md)
@@ -100,6 +120,17 @@ Manual smoke:
 ## Community and support
 
 For modpack and mod discussion, playtest feedback, and bug reports, join the [Better Content Discord](https://discord.gg/EkRnZbzqS9).
+
+## Native source fixture safety
+
+`verifyFull` runs the nine authored native GameTests in a fresh `build/gametest/<UUID>/`
+fixture, separate from client `run/`. Preparation uses the actual ForgeGradle RunConfig,
+creates only absent comment-only `server.properties` (native defaults), and copies
+structures there. Old worlds/logs and existing properties are not reset. Actual native
+startup/shutdown, exactly nine completed/passed required tests and zero ERROR/FATAL
+records are required. `verifyFast` tests settings preservation and negative diagnostic/
+population controls without Minecraft. Retain complete prior builds, libraries, fixtures
+and evidence before any independently authorized clean/reset.
 
 ## Canonical identity
 
