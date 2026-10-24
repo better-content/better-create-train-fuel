@@ -20,11 +20,7 @@ INFO startup includes effective enabled/version/integration/own-source identity 
 Standalone stays native INFO; pack profile chooses scoped DEBUG/`bc.playtest.level`.
 Common six-case and refuel/remainder projection tests run with the source gate.
 
-## Scope and authority
-
-This repository owns its mod-specific behavior and authoring inputs. Read [local instructions](AGENTS.md)
-and the [shared documentation/policy index](../../better-content-modpack/docs/README.md).
-
+## Scope
 
 Standalone Forge 1.20.1 addon for Create 6.0.8 that replaces Create's flat powered-train fuel drain with speed-scaled fuel drain.
 
