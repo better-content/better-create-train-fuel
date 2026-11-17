@@ -148,6 +148,31 @@ public final class TrainFuelScalingGameTests {
         helper.succeed();
     }
 
+    @GameTest(templateNamespace = "minecraft", template = "empty")
+    public static void fractionalDebtIsIsolatedBetweenTrains(GameTestHelper helper) {
+        Train slow = minimalTrain();
+        Train normal = minimalTrain();
+        slow.speed = 1.0;
+        normal.speed = 2.0;
+        slow.fuelTicks = 5;
+        normal.fuelTicks = 5;
+
+        slow.burnFuel();
+        slow.burnFuel();
+        normal.burnFuel();
+        if (slow.fuelTicks != 5 || normal.fuelTicks != 4) {
+            helper.fail("Fractional debt from the slow train must not affect a separate normal-speed train");
+            return;
+        }
+        slow.burnFuel();
+        normal.burnFuel();
+        if (slow.fuelTicks != 4 || normal.fuelTicks != 3) {
+            helper.fail("Each train must consume only its own accumulated fuel debt");
+            return;
+        }
+        helper.succeed();
+    }
+
     private static Train minimalTrain() {
         return new Train(UUID.randomUUID(), null, null, new ArrayList<>(), new ArrayList<>(), false);
     }

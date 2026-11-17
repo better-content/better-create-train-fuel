@@ -1,5 +1,5 @@
 // Reviewed authored native population; update with actual test additions/removals.
-def expectedNativeTests = 9
+def expectedNativeTests = 10
 
 def nativeRun = minecraft.runs.getByName('gameTestServer')
 def fixtureRoot = layout.buildDirectory.dir('gametest').get().asFile.canonicalFile
